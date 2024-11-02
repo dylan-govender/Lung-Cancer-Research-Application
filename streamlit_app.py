@@ -3,6 +3,9 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import joblib
+import tensorflow as tf
+import numpy as np
+import PIL
 
 # Show the page title and description.
 st.set_page_config(page_title="Lung Cancer Detection", page_icon="🫁")
@@ -23,11 +26,100 @@ st.write(
 
 # --------------------------------------------------------------
 
-st.subheader("CT Scans of Lung Cancer")
-st.image("images/Lung Cancer Images/CT/CT.png", caption="Sample CT Scan Images Used for Model Training in Lung Cancer Detection")
+# st.subheader("CT Scans of Lung Cancer")
+# st.image("images/Lung Cancer Images/CT/CT.png", caption="Sample CT Scan Images Used for Model Training in Lung Cancer Detection")
 
-st.subheader("Histopathological Images of Lung Cancer")
-st.image("images/Lung Cancer Images/Histopathological/Histopathological.png", caption="Sample  Images Used for Model Training in Lung Cancer Detection")
+# st.subheader("Histopathological Images of Lung Cancer")
+# st.image("images/Lung Cancer Images/Histopathological/Histopathological.png", caption="Sample  Images Used for Model Training in Lung Cancer Detection")
+
+
+# --------------------------------------------------------------
+
+st.subheader("**Lung Cancer Image Analysis**")
+
+# Model selection
+image_choice = st.selectbox("**Choose the Image Type for Prediction**", options=["CT-Scan Image", "🩻 X-Ray Image", "Histopathological Image"])
+
+# Define image dimensions and preprocess function based on your model training
+IMG_SIZE = (244, 244)  # Match to the input size your model was trained on
+
+@tf.keras.utils.register_keras_serializable()
+class F1Score(tf.keras.metrics.Metric):
+    def __init__(self, name="f1_score", **kwargs):
+        super(F1Score, self).__init__(name=name, **kwargs)
+        self.precision = tf.keras.metrics.Precision()
+        self.recall = tf.keras.metrics.Recall()
+
+    def update_state(self, y_true, y_pred, sample_weight=None):
+        self.precision.update_state(y_true, y_pred, sample_weight)
+        self.recall.update_state(y_true, y_pred, sample_weight)
+
+    def result(self):
+        precision = self.precision.result()
+        recall = self.recall.result()
+        epsilon = tf.keras.backend.epsilon()  
+        return 2 * ((precision * recall) / (precision + recall + epsilon))
+
+    def reset_states(self):
+        self.precision.reset_states()
+        self.recall.reset_states()
+       
+def preprocess_cnn_image(image):
+    image = image.resize((244, 244))
+    image_array = np.array(image)
+    image_array = tf.keras.applications.mobilenet_v2.preprocess_input(image_array)
+    image_array = np.expand_dims(image_array, axis=0) # Add a batch dimension
+    
+    return image_array
+
+def print_deduction(status):
+    if status == 'Benign':
+        st.write("**Diagnosis:** The image shows a benign case. No malignancy detected, but regular monitoring is advised.")
+    elif status == 'Malignant':
+        st.write("**Alert:** The image indicates a malignant lung cancer case. Immediate medical attention is recommended.")
+    elif status == 'Normal':
+        st.write("**Result:** The image appears normal with no signs of lung cancer.")
+    elif status == "Malignant_ACA":
+        st.write("**Diagnosis:** The image indicates an Adenocarcinoma (ACA) case. Further evaluation and treatment should be discussed with a healthcare professional.")
+    elif status == "Malignant_SCC":
+        st.write("**Diagnosis:** The image indicates Squamous Cell Carcinoma (SCC). Prompt medical intervention is necessary, and treatment options should be explored with a specialist.")
+
+model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT Fine-Tuned Model"]
+
+def run_model(model_name, image):
+    if model_name == model_names[0]:
+        pass
+    elif model_name == model_names[1]:
+        pass
+    elif model_name == model_names[2]:
+        pass
+    elif model_name == model_names[3]:
+        pass
+    elif model_name == model_names[4]:
+        pass
+    elif model_name == model_names[5]:   
+        pass
+
+if image_choice == "CT-Scan Image":
+    model_choice = st.selectbox("**Choose a Model for Prediction**", options=sorted(model_names))
+elif image_choice == "Histopathological Image":
+    model_choice = st.selectbox("**Choose a Model for Prediction**", options=["ViT Model"])
+elif image_choice == "X-Ray Image":
+    model_choice = st.selectbox("**Choose a Model for Prediction**", options=["ViT Model"])
+
+# Title
+st.subheader("**Upload an Image**")
+
+# Image uploader
+uploaded_file = st.file_uploader("**Choose an image...**", type=["jpg", "jpeg", "png"])
+
+if uploaded_file is not None:
+    # Open and display the image
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)  # Adjust width as needed
+
+    # Run model on uploaded image
+    run_model(model_choice, image)
 
 # --------------------------------------------------------------
 

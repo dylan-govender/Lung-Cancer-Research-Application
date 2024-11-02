@@ -3,3 +3,4 @@ matplotlib
 joblib
 scikit-learn
 tensorflow
+pillow
