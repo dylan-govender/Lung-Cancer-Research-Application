@@ -36,7 +36,7 @@ st.write(
 
 # --------------------------------------------------------------
 
-st.subheader("**Lung Cancer Image Analysis**")
+st.subheader("**🤖 Lung Cancer Image Analysis**")
 
 # Model selection
 image_choice = st.selectbox("**Choose the Image Type for Prediction**", options=["CT-Scan Image", "X-Ray Image", "Histopathological Image"])
