@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import joblib
 import tensorflow as tf
 import numpy as np
-import PIL
+from PIL import Image
 
 # Show the page title and description.
 st.set_page_config(page_title="Lung Cancer Detection", page_icon="🫁")
