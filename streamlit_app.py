@@ -24,6 +24,7 @@ st.write(
     """ 
 )
 
+"---"
 # --------------------------------------------------------------
 
 # st.subheader("CT Scans of Lung Cancer")
@@ -121,6 +122,7 @@ if uploaded_file is not None:
     # Run model on uploaded image
     run_model(model_choice, image)
 
+"---"
 # --------------------------------------------------------------
 
 st.subheader("🔍 Exploring Lung Cancer")
@@ -246,6 +248,7 @@ gender_chart = (
 
 st.altair_chart(gender_chart, use_container_width=True)
 
+"---"
 # --------------------------------------------------------------
 
 # Streamlit UI
