@@ -39,7 +39,7 @@ st.write(
 st.subheader("**Lung Cancer Image Analysis**")
 
 # Model selection
-image_choice = st.selectbox("**Choose the Image Type for Prediction**", options=["CT-Scan Image", "🩻 X-Ray Image", "Histopathological Image"])
+image_choice = st.selectbox("**Choose the Image Type for Prediction**", options=["CT-Scan Image", "X-Ray Image", "Histopathological Image"])
 
 # Define image dimensions and preprocess function based on your model training
 IMG_SIZE = (244, 244)  # Match to the input size your model was trained on
