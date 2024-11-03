@@ -1,4 +1,4 @@
-# :earth_americas: GDP dashboard template
+#  🫁 Lung Cancer Research Application
 
 A simple Streamlit app that is used for Lung Cancer Research. Uses Vision Transformer Models to predict on images.
 
