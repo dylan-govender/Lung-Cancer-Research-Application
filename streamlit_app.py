@@ -7,6 +7,7 @@ import tensorflow as tf
 import numpy as np
 import torch
 import torchvision
+import os
 import torchvision.transforms as transforms
 
 from PIL import Image
@@ -74,7 +75,6 @@ def preprocess_cnn_image(image):
     image_array = np.array(image)
     image_array = tf.keras.applications.mobilenet_v2.preprocess_input(image_array)
     image_array = np.expand_dims(image_array, axis=0) # Add a batch dimension
-    
     return image_array
 
 # Preprocess image for PyTorch models
@@ -107,32 +107,38 @@ model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT CVT 
 
 # Load Keras models based on user selection
 model_paths = {
-    "CNN Base Model": "models/cnn_model_2.keras",
-    "CNN Hybrid Model": "models/cnn_model_2.keras",
-    "ViT Base Model": "models/vit_ground_up_ct_model.pth",
-    "ViT CVT Model": "models/vit_cvt_ground_up_ct_model.pth",
-    "ViT Parallel Model": "models/vit_parallel_ground_up_ct_model.pth"
+    "CNN Base Model": "models//cnn_model_2.keras",
+    "CNN Hybrid Model": "models//cnn_model_2.keras",
+    "ViT Base Model": "models//vit_ground_up_ct_model.pth",
+    "ViT CVT Model": "models//vit_cvt_ground_up_ct_model.pth",
+    "ViT Parallel Model": "models//vit_parallel_ground_up_ct_model.pth"
 }
 
-import os
-def load_model(model_name):
+@st.cache_data
+def loadModel(model_name):
     model_path = model_paths.get(model_name)
-    if model_path:
+        
+    if model_path and os.path.exists(model_path):
         if model_path.endswith(".keras"):
             # Load TensorFlow model
-            model = tf.keras.models.load_model(model_path, custom_objects={'F1Score': F1Score})
+            model = tf.keras.models.load_model(model_path)
+            model.save("models//cnn_model_2.h5")
             return model, 'tf'
+        
         elif model_path.endswith(".pth"):
             # Load PyTorch model
             model = torch.load(model_path)
             model.eval()  # Set model to evaluation mode
             return model, 'torch'
-    st.error("Model not found. Please check the model path.")
+    else:
+        if not os.path.exists(model_path):
+            print("File not found!")
+            
     return None, None
     
 # Run model on uploaded image
 def run_model(model_name, image):
-    model, framework = load_model(model_name)
+    model, framework = loadModel(model_name)
     if model:
         if framework == 'tf':
             # Preprocess and predict using TensorFlow model
@@ -140,6 +146,7 @@ def run_model(model_name, image):
             predictions = model.predict(processed_image)
             predicted_class = np.argmax(predictions, axis=1)[0]
             confidence = np.max(predictions) * 100  # Get confidence as a percentage
+            
         elif framework == 'torch':
             # Preprocess and predict using PyTorch model
             processed_image = preprocess_vit_image(image)
@@ -171,7 +178,7 @@ if uploaded_file is not None:
     st.image(image, caption="Uploaded Image", use_column_width=True)
     
     # Add a "Predict" button
-    if st.button("Predict"):
+    if st.button("Predict Image"):
         # Run model on uploaded image
         run_model(model_choice, image)
 
