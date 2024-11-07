@@ -4,3 +4,5 @@ joblib
 scikit-learn
 tensorflow
 pillow
+torch
+einops
