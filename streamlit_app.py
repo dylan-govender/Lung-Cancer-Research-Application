@@ -85,7 +85,7 @@ def print_deduction(status):
     elif status == "Malignant_SCC":
         st.write("**Diagnosis:** The image indicates Squamous Cell Carcinoma (SCC). Prompt medical intervention is necessary, and treatment options should be explored with a specialist.")
 
-model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT CVT Model", "ViT Parallel Model", "ViT Fine Tuned Model"]
+model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT CVT Model", "ViT Parallel Model"]
 
 def run_model(model_name, image):
     if model_name == model_names[0]:
