@@ -107,11 +107,11 @@ model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT CVT 
 
 # Load Keras models based on user selection
 model_paths = {
-    "CNN Base Model": "cnn_model_2.keras",
-    "CNN Hybrid Model": "cnn_model_2.keras",
-    "ViT Base Model": "vit_ground_up_ct_model.pth",
-    "ViT CVT Model": "vit_cvt_ground_up_ct_model.pth",
-    "ViT Parallel Model": "vit_parallel_ground_up_ct_model.pth"
+    "CNN Base Model": "models/cnn_model_2.keras",
+    "CNN Hybrid Model": "models/cnn_model_2.keras",
+    "ViT Base Model": "models/vit_ground_up_ct_model.pth",
+    "ViT CVT Model": "models/vit_cvt_ground_up_ct_model.pth",
+    "ViT Parallel Model": "models/vit_parallel_ground_up_ct_model.pth"
 }
 
 import os
@@ -129,7 +129,7 @@ def load_model(model_name):
             return model, 'torch'
     st.error("Model not found. Please check the model path.")
     return None, None
-
+    
 # Run model on uploaded image
 def run_model(model_name, image):
     model, framework = load_model(model_name)
@@ -139,33 +139,21 @@ def run_model(model_name, image):
             processed_image = preprocess_cnn_image(image)
             predictions = model.predict(processed_image)
             predicted_class = np.argmax(predictions, axis=1)[0]
+            confidence = np.max(predictions) * 100  # Get confidence as a percentage
         elif framework == 'torch':
             # Preprocess and predict using PyTorch model
             processed_image = preprocess_vit_image(image)
             with torch.no_grad():
                 predictions = model(processed_image)
             predicted_class = predictions.argmax(dim=1).item()
+            confidence = torch.softmax(predictions, dim=1)[0, predicted_class].item() * 100  # Confidence for PyTorch
 
         # Define class labels (adjust these to match your model's output)
         class_labels = ["Normal", "Benign", "Malignant", "Malignant_ACA", "Malignant_SCC"]
         status = class_labels[predicted_class]
 
-        # Display the result
-        print_deduction(status)
-    
-def run_model(model_name, image):
-    if model_name == model_names[0]:
-        pass
-    elif model_name == model_names[1]:
-        pass
-    elif model_name == model_names[2]:
-        pass
-    elif model_name == model_names[3]:
-        pass
-    elif model_name == model_names[4]:
-        pass
-    elif model_name == model_names[5]:   
-        pass
+        # Display the result with confidence
+        print_deduction(status, confidence)
 
 if image_choice == "CT-Scan Image":
     model_choice = st.selectbox("**Choose a Model for Prediction**", options=sorted(model_names))
@@ -179,12 +167,13 @@ st.subheader("**Upload an Image**")
 uploaded_file = st.file_uploader("**Choose an image...**", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Open and display the image
     image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)  # Adjust width as needed
-
-    # Run model on uploaded image
-    run_model(model_choice, image)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    
+    # Add a "Predict" button
+    if st.button("Predict"):
+        # Run model on uploaded image
+        run_model(model_choice, image)
 
 "---"
 # --------------------------------------------------------------
