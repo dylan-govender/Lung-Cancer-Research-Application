@@ -121,8 +121,8 @@ def loadModel(model_name):
     if model_path and os.path.exists(model_path):
         if model_path.endswith(".keras"):
             # Load TensorFlow model
-            model = tf.keras.models.load_model(model_path)
-            model.save("models//cnn_model_2.h5")
+        
+            model = tf.keras.models.load_model('models//cnn_model_2.keras')
             return model, 'tf'
         
         elif model_path.endswith(".pth"):
