@@ -5,6 +5,10 @@ import matplotlib.pyplot as plt
 import joblib
 import tensorflow as tf
 import numpy as np
+import torch
+import torchvision
+import torchvision.transforms as transforms
+
 from PIL import Image
 
 # Show the page title and description.
@@ -66,12 +70,26 @@ class F1Score(tf.keras.metrics.Metric):
         self.recall.reset_states()
        
 def preprocess_cnn_image(image):
-    image = image.resize((244, 244))
+    image = image.resize(IMG_SIZE)
     image_array = np.array(image)
     image_array = tf.keras.applications.mobilenet_v2.preprocess_input(image_array)
     image_array = np.expand_dims(image_array, axis=0) # Add a batch dimension
     
     return image_array
+
+# Preprocess image for PyTorch models
+# Preprocess image for PyTorch ViT models
+def preprocess_vit_image(image):
+    transform = transforms.Compose([
+        transforms.Resize(IMG_SIZE),
+        transforms.RandomHorizontalFlip(p=0.5),
+        transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0), ratio=(0.75, 1.3333333333333333)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+    image = transform(image)
+    image = image.unsqueeze(0)  # Add a batch dimension
+    return image
 
 def print_deduction(status):
     if status == 'Benign':
@@ -87,6 +105,54 @@ def print_deduction(status):
 
 model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT CVT Model", "ViT Parallel Model"]
 
+# Load Keras models based on user selection
+model_paths = {
+    "CNN Base Model": "cnn_model_2.keras",
+    "CNN Hybrid Model": "cnn_model_2.keras",
+    "ViT Base Model": "vit_ground_up_ct_model.pth",
+    "ViT CVT Model": "vit_cvt_ground_up_ct_model.pth",
+    "ViT Parallel Model": "vit_parallel_ground_up_ct_model.pth"
+}
+
+import os
+def load_model(model_name):
+    model_path = model_paths.get(model_name)
+    if model_path:
+        if model_path.endswith(".keras"):
+            # Load TensorFlow model
+            model = tf.keras.models.load_model(model_path, custom_objects={'F1Score': F1Score})
+            return model, 'tf'
+        elif model_path.endswith(".pth"):
+            # Load PyTorch model
+            model = torch.load(model_path)
+            model.eval()  # Set model to evaluation mode
+            return model, 'torch'
+    st.error("Model not found. Please check the model path.")
+    return None, None
+
+# Run model on uploaded image
+def run_model(model_name, image):
+    model, framework = load_model(model_name)
+    if model:
+        if framework == 'tf':
+            # Preprocess and predict using TensorFlow model
+            processed_image = preprocess_cnn_image(image)
+            predictions = model.predict(processed_image)
+            predicted_class = np.argmax(predictions, axis=1)[0]
+        elif framework == 'torch':
+            # Preprocess and predict using PyTorch model
+            processed_image = preprocess_vit_image(image)
+            with torch.no_grad():
+                predictions = model(processed_image)
+            predicted_class = predictions.argmax(dim=1).item()
+
+        # Define class labels (adjust these to match your model's output)
+        class_labels = ["Normal", "Benign", "Malignant", "Malignant_ACA", "Malignant_SCC"]
+        status = class_labels[predicted_class]
+
+        # Display the result
+        print_deduction(status)
+    
 def run_model(model_name, image):
     if model_name == model_names[0]:
         pass
