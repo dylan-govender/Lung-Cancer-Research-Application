@@ -39,7 +39,7 @@ st.write(
 st.subheader("**🤖 Lung Cancer Image Analysis**")
 
 # Model selection
-image_choice = st.selectbox("**Choose the Image Type for Prediction**", options=["CT-Scan Image", "X-Ray Image", "Histopathological Image"])
+image_choice = st.selectbox("**Choose the Image Type for Prediction**", options=["CT-Scan Image", "Histopathological Image"])
 
 # Define image dimensions and preprocess function based on your model training
 IMG_SIZE = (244, 244)  # Match to the input size your model was trained on
@@ -85,7 +85,7 @@ def print_deduction(status):
     elif status == "Malignant_SCC":
         st.write("**Diagnosis:** The image indicates Squamous Cell Carcinoma (SCC). Prompt medical intervention is necessary, and treatment options should be explored with a specialist.")
 
-model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT Finetuned Model"]
+model_names = ["CNN Base Model", "CNN Hybrid Model", "ViT Base Model", "ViT CVT Model", "ViT Parallel Model", "ViT Fine Tuned Model"]
 
 def run_model(model_name, image):
     if model_name == model_names[0]:
@@ -104,8 +104,6 @@ def run_model(model_name, image):
 if image_choice == "CT-Scan Image":
     model_choice = st.selectbox("**Choose a Model for Prediction**", options=sorted(model_names))
 elif image_choice == "Histopathological Image":
-    model_choice = st.selectbox("**Choose a Model for Prediction**", options=["ViT Model"])
-elif image_choice == "X-Ray Image":
     model_choice = st.selectbox("**Choose a Model for Prediction**", options=["ViT Model"])
 
 # Title
