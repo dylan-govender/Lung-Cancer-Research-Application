@@ -26,7 +26,7 @@ is far more critical.
 
 #  🫁 Lung Cancer Research Application
 
-A simple Streamlit app that is used for Lung Cancer Research. Uses Vision Transformer Models to predict on images.
+This is a simple Streamlit app demonstration used for Lung Cancer Research. Uses Vision Transformer Models to predict whether CT or Histopathological scan images are normal, benign, or malignant.
 
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://lung-cancer-research.streamlit.app/)
 
