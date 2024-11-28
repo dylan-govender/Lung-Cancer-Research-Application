@@ -9,6 +9,7 @@ A simple Streamlit app that is used for Lung Cancer Research. Uses Vision Transf
 ## 🎥 Demo Video  
 
 Check out the demo video showcasing the application's functionality:  
+
 [![Watch Demo Video](https://img.youtube.com/vi/nGwYNtuyl8E/0.jpg)](https://youtu.be/nGwYNtuyl8E)  
 
 *(Click the image above or [here](https://www.youtube.com/watch?v=nGwYNtuyl8E) to watch the video.)*  
