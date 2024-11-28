@@ -17,15 +17,29 @@ st.set_page_config(page_title="Lung Cancer Detection", page_icon="🫁")
 st.title("🫁 Lung Cancer Detection")
 st.write(
     """
-    Lung cancer is a significant contributor to cancer-related mortality. 
-    With recent advancements in Computer Vision, Vision Transformers have gained traction and shown remarkable success in medical image analysis. 
-    This study explores the potential of Vision Transformer models (ViT, CvT, CCT ViT, Parallel-ViT, Efficient ViT) compared to established state-of-the-art 
-    architectures (CNN) for lung cancer detection 
-    via medical imaging modalities, including CT scans and X-rays. This work will evaluate the impact of data availability and different training approaches 
-    on model performance. The training approaches considered include but are not limited to Supervised Learning and Transfer Learning. 
-    Established evaluation metrics such as accuracy, recall, precision, F1-score, and area under the ROC curve (AUC-ROC) will assess model performance in 
-    detection efficacy, data validity, and computational efficiency. Cost-sensitive evaluation metrics such as cost matrix and weighted loss will analyse model performance 
-    by considering the real-world implications of different types of errors, especially in cases where misdiagnosing a cancer case is more critical.
+    Lung cancer is a significant contributor to 
+    cancer-related mortality. With recent advancements in 
+    Computer Vision, Vision Transformers have gained traction 
+    and shown remarkable success in medical image analysis. This 
+    study explored the potential of Vision Transformer models (ViT, 
+    CVT, CCT ViT, Parallel ViT, Efficient ViT) compared to 
+    established state-of-the-art architectures (CNN) for lung 
+    cancer detection via medical imaging modalities, including CT 
+    and Histopathological scans. This work evaluated the impact of 
+    data availability and different training approaches on model 
+    performance. The training approaches included but were not 
+    limited to, Supervised Learning and Transfer Learning. 
+    Established evaluation metrics such as accuracy, recall, 
+    precision, F1-score, and area under the ROC curve (AUC
+    ROC) assessed model performance in terms of detection 
+    efficacy, data validity, and computational efficiency. ViT 
+    achieved an accuracy of 94% on a balanced dataset and an 
+    accuracy of 87% on an imbalanced dataset trained from the 
+    ground up. Cost-sensitive evaluation metrics, such as cost 
+    matrix and weighted loss, analysed model performance by 
+    considering the real-world implications of different types of 
+    errors, especially in cases where misdiagnosing a cancer case 
+    is far more critical.
     """ 
 )
 

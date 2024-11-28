@@ -1,3 +1,29 @@
+#  🫁 Lung Cancer Research Paper
+
+***Abstract***-Lung cancer is a significant contributor to 
+cancer-related mortality. With recent advancements in 
+Computer Vision, Vision Transformers have gained traction 
+and shown remarkable success in medical image analysis. This 
+study explored the potential of Vision Transformer models (ViT, 
+CVT, CCT ViT, Parallel ViT, Efficient ViT) compared to 
+established state-of-the-art architectures (CNN) for lung 
+cancer detection via medical imaging modalities, including CT 
+and Histopathological scans. This work evaluated the impact of 
+data availability and different training approaches on model 
+performance. The training approaches included but were not 
+limited to, Supervised Learning and Transfer Learning. 
+Established evaluation metrics such as accuracy, recall, 
+precision, F1-score, and area under the ROC curve (AUC
+ROC) assessed model performance in terms of detection 
+efficacy, data validity, and computational efficiency. ViT 
+achieved an accuracy of 94% on a balanced dataset and an 
+accuracy of 87% on an imbalanced dataset trained from the 
+ground up. Cost-sensitive evaluation metrics, such as cost 
+matrix and weighted loss, analysed model performance by 
+considering the real-world implications of different types of 
+errors, especially in cases where misdiagnosing a cancer case 
+is far more critical.
+
 #  🫁 Lung Cancer Research Application
 
 A simple Streamlit app that is used for Lung Cancer Research. Uses Vision Transformer Models to predict on images.
