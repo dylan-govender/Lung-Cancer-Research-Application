@@ -8,7 +8,7 @@ This repository accompanies the **Lung Cancer Research** project and includes:
 
 ## 📂 **Google Drive Link**  
 Access all saved and downloaded models, evaluations, and supplementary resources via the Google Drive link below:  
-🔗 [Google Drive: Lung Cancer Models & Evaluations](https://drive.google.com/drive/folders/1BFMa-4MUvW7uteWN4fEOTuU5YBhGRVOO?usp=sharing)  
+🔗 [Google Drive: Lung Cancer Models & Evaluations](https://drive.google.com/drive/folders/1BFMa-4MUvW7uteWN4fEOTuU5YBhGRVOO?usp=sharing) (Deprecated)
 
 ---
 
